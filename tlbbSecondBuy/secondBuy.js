@@ -1,9 +1,22 @@
 let request = require('request');
 let cheerio = require('cheerio');
+const { createCanvas } = require('canvas')
 
 
-let acoundId = '201906051812582830';
-let cookId= 'ed99be31-cee0-45ef-a62c-c7b1d64e5de1';
+let acoundId = '202004271140585209';
+let cookId= '297aa9cf-25fe-4ad2-a577-e2fc39ff90b0';
+
+//  查询商品到期时间
+      function searchGoodsTime(acoundId){
+          let shopDetailUrl = 'http://tl.cyg.changyou.com/goods/char_detail?serial_num='+acoundId+'&t='+new Date().getTime(); // 商品链接
+          request(shopDetailUrl,function (err,res,body) {
+             let $ = cheerio.load(body);
+             let  second = $($('.info-list').children()[4]).text();
+             console.log( second)
+          })
+      }
+searchGoodsTime(acoundId)
+
 let verifyImgUrl = 'http://tl.cyg.changyou.com/transaction/captcha-image?goods_serial_num='+acoundId+'&t='+new Date().getTime();
 const { loadImage } = require('canvas')
 
@@ -11,7 +24,7 @@ const { Image } = require('canvas')
 const img = new Image();
 img.src=verifyImgUrl;
 
-const { createCanvas } = require('canvas')
+
 const mycanvas = createCanvas(200, 200)
 let ctx = mycanvas.getContext('2d');
 
@@ -19,28 +32,6 @@ img.onload=()=> {
     // do something with image
     ctx.drawImage(img, 0, 0)
 }
-
-
-
-app.get('/',function (req,res) {
-    let c=ctx.getImageData(0, 0, img.width, img.height);
-    for(let i = 0; i < c.height; ++i){
-        for(let j = 0; j < c.width; ++j){
-            let x = i*4*c.width + 4*j,  //imagedata读取的像素数据存储在data属性里，是从上到下，从左到右的，每个像素需要占用4位数据，分别是r,g,b,alpha透明通道
-                r = c.data[x],
-                g = c.data[x+1],
-                b = c.data[x+2];
-            c.data[x+3] = 150;    //透明度设置为150,0表示完全透明
-            //图片反相：
-            let rgbAvrage = (c.data[x]+c.data[x+1]+c.data[x+2])/3
-            c.data[x]= c.data[x+1]=c.data[x+2]= rgbAvrage>180?255:0;
-        }
-    }
-    ctx.putImageData(c,0,0);
-    res.send('<img src="' + mycanvas.toDataURL() + '" />')
-})
-
-
 
 // 设置cookie，
 let j = request.jar();
@@ -50,17 +41,7 @@ let cookie = request.cookie('sid='+cookId);
 j.setCookie(cookie, url);
 
 // 获取商品公示期到期时间
-let arriveTime=1; //到期毫秒数
-let second = 1;
-let shopDetailUrl = 'http://tl.cyg.changyou.com/goods/char_detail?serial_num='+acoundId+'&t='+new Date().getTime();
-request(shopDetailUrl,function (err,res,body) {
-    let $ = cheerio.load(body);
-    second = $('.less-than-day').attr('data-second');
-    console.log(second)
-    second = second?Number(second):second;
-    if(second)arriveTime = new Date().getTime()+(second)*1000;
-    console.log(arriveTime)
-})
+
 // 获取图片验证码
 
 function _initImg(){
@@ -221,7 +202,7 @@ function queryTIme() {
 
     })
 }
-   intervalTime = setInterval(wholeBuy,100)
+ //  intervalTime = setInterval(wholeBuy,100)
 
 
 
