@@ -34,20 +34,8 @@ let simpleServe = function () {
     app.listen(port)
 }
 
-  let a =  [1,5,9,66,10,5,44,74,100,3,156,41,5,6,8,99,0,11,25,33]
+  let a =  1
 
-  let b = []
-for(let t=0;t<a.length-1;t++) {
-    let temp = a[t]
-    let index= t;
-    for (let i = t; i < a.length ; i++) {
-        if(a[i]<temp){
-            temp = a[i]
-            index = i
-        }
-    }
-    let value = a[t]
-    a[t] = a[index]
-    a[index] = value
-}
-   console.log(a)
+  module.exports = {
+    a:a
+  }
