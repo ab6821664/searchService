@@ -34,10 +34,15 @@ let simpleServe = function () {
     app.listen(port)
 }
 
-  let a =  1
-
-  module.exports = {
-    a:a
-  }
-
-  //  后来 我们怎办  知识改变世界 哈哈
+    function test(a,b) {
+        console.log(b)
+        return {
+            test:function (c) {
+                return test(c,a)
+            }
+        }
+    }
+    let retA = test(0);
+    retA.test(2)
+retA.test(4)
+retA.test(8)
