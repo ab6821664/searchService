@@ -90,8 +90,11 @@ process.on('uncaughtException', function (err) {
                      resolve(msg)
                      return
                  }
-                 if(body=='captcha_error'){
+                 function reBuy() {
                      commitBuy(acoundId,cookId,resolve)
+                 }
+                 if(body=='captcha_error'){
+                      setTimeout(reBuy,120)
                  }else if(body.indexOf('success')>-1){
                      msg = '抢购成功，请回到畅易阁自行支付'
                      resolve(msg)
@@ -99,7 +102,9 @@ process.on('uncaughtException', function (err) {
                      msg = 'sid错误或者过期'
                      resolve(msg)
                  }
-                 else {
+                 else if (body.length>50) {
+                     setTimeout(reBuy,120)
+                 }else {
                      msg = '抢购结果为'+body;
                      resolve(msg)
                  }
