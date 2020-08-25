@@ -2,6 +2,7 @@
 const express = require('express')
 const second = require('./tlbbSecondBuy/secondBuy.js')
 const bodyParser = require('body-parser');
+const  API = require('./tlbbSecondBuy/recharge.js')
 
 let app = express()
 app.use(bodyParser.json()); // support json encoded bodies
@@ -31,4 +32,15 @@ app.post('/commitBuyService', function (req, res) {
           res.json(obj);
      })
 })
+
+console.log(API)
+app.post('/recharge', function (req, res) {
+     let {body} = req;
+     let {id,type,used} = body;
+    API.recharge(used,id,type).then(data=>{
+        res.json(data);
+    })
+
+})
+
 app.listen('8000')

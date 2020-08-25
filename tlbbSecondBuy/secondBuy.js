@@ -2,7 +2,8 @@ let request = require('request');
 let cheerio = require('cheerio');
 let axios = require('axios')
 const qs = require('qs')
-const { createCanvas } = require('canvas')
+//const { createCanvas } = require('canvas')
+let createCanvas = {}
 // 监控异常
 process.on('uncaughtException', function (err) {
     console.log('Caught exception: ' + err);
